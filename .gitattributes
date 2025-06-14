@@ -1,0 +1,31 @@
+# Archivos de texto genéricos
+* text=auto
+
+# Código fuente y configuración
+*.java      text eol=lf
+*.xml       text eol=lf
+*.properties text eol=lf
+*.yml       text eol=lf
+*.yaml      text eol=lf
+*.md        text eol=lf
+*.gitignore text eol=lf
+*.gitattributes text eol=lf
+
+# Scripts para Unix/Linux
+*.sh        text eol=lf
+
+# Scripts para Windows
+*.cmd       text eol=crlf
+*.bat       text eol=crlf
+
+# Binarios y archivos que no deben modificarse
+*.jar       binary
+*.war       binary
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.pdf       binary
+
+# Wrapper script
+/mvnw       text eol=lf
