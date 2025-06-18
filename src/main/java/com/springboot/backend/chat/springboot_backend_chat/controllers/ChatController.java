@@ -16,10 +16,13 @@ public class ChatController {
     // Recibir mensajes de todos los usuarios | Notifica
     @SendTo("/chat/message")
     // Recive mensaje para guardar en DB
-    // y para enviar a todos los usuaarios
+    // y para enviar a todos los usuarios
     public Message receiveMessage(Message message){
         message.setDate(new Date().getTime());
         message.setText(message.getText());
+        if(message.getType().equals("NEW_USER")){
+            message.setText("Nuevo usuario conectado");
+        }
         return message;
     }
 }
