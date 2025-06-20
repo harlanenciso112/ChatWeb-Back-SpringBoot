@@ -23,6 +23,9 @@ public class ChatController {
         if(message.getType().equals("NEW_USER")){
             message.setText("Nuevo usuario conectado");
         }
+        if(message.getType().equals("USER_DISCONNECT")){
+            message.setText("Se ha desconectado");
+        }
         return message;
     }
 }
