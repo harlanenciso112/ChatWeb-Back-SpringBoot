@@ -9,6 +9,8 @@ public class Message {
 
     private String type;
 
+    private String color;
+
 
     public String getText(){
         return text;
@@ -42,6 +44,13 @@ public class Message {
         this.type = type;
     }
 
+    public String getColor(){
+        return color;
+    }
+
+    public void setColor(String color){
+        this.color = color;
+    }
     
     
 
