@@ -1,19 +1,27 @@
 package com.springboot.backend.chat.springboot_backend_chat.controllers;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 import com.springboot.backend.chat.springboot_backend_chat.models.Message;
+import com.springboot.backend.chat.springboot_backend_chat.services.MessageService;
 
 @Controller
 public class ChatController {
 
     private String[] colors = {"yellow", "red", "orange", "purple", "magenta", "blue", "green"};
+    private final MessageService service;
 
+    
+    public ChatController(MessageService service) {
+        this.service = service;
+    }
     // Configurar ruta al destino | ruta:/app
     // Publicar mensaje | Ruta para enviar mensajes
     @MessageMapping("/message")
@@ -28,6 +36,8 @@ public class ChatController {
         if(message.getType().equals("NEW_USER")){
             message.setColor(this.colors[new Random().nextInt(colors.length)]);
             message.setText("Nuevo usuario conectado");
+        }else{
+            service.save(message);
         }
 
         if(message.getType().equals("USER_DISCONNECT")){
@@ -40,5 +50,11 @@ public class ChatController {
     @SendTo("/chat/writing")
     public String isWritString(String username){
         return username.concat(" esta escribiendo...");
+    }
+
+    @MessageMapping("/history")
+    @SendTo("/chat/history/{clientId}")
+    public List<Message> getHistoryMessages(@DestinationVariable String clienId){
+        return service.findAll();
     }
 }
