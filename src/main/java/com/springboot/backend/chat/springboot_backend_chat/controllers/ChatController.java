@@ -1,12 +1,14 @@
 package com.springboot.backend.chat.springboot_backend_chat.controllers;
 
 import java.util.Date;
-import java.util.List;
+
 import java.util.Random;
 
-import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.springboot.backend.chat.springboot_backend_chat.models.Message;
@@ -18,7 +20,10 @@ public class ChatController {
     private String[] colors = {"yellow", "red", "orange", "purple", "magenta", "blue", "green"};
     private final MessageService service;
 
-    
+
+    @Autowired
+    private SimpMessagingTemplate webSocket;
+
     public ChatController(MessageService service) {
         this.service = service;
     }
@@ -53,8 +58,7 @@ public class ChatController {
     }
 
     @MessageMapping("/history")
-    @SendTo("/chat/history/{clientId}")
-    public List<Message> getHistoryMessages(@DestinationVariable String clienId){
-        return service.findAll();
+    public void getHistoryMessages(String clienId){
+        webSocket.convertAndSend("/chat/history/".concat(clienId), service.findAll());
     }
 }
